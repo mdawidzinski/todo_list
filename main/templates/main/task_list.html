@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+<div class="header-bar">
+    <div style="display: flex; align-items: center;">
+        <h2 style="margin-bottom: 0;">Welcome, {{ user.username|title }}!</h2><h3 style="margin-left: 10px;
+        margin-bottom: 0;">Today is: {{date}}</h3>
+        <a href="{% url 'Logout' %}" class="logout-link">Logout</a>
+    </div>
+    <h3> Task{{count|pluralize:'s'}} to do: <i>{{count}}</i> </h3>
+</div>
+
+<form method="GET">
+    <input type="search" name="search" value="{{search_task}}">
+    <input type="submit" value="Search">
+</form>
+
+<h1>To Do List</h1>
+<a href="{% url 'Create' %}">Add Task</a>
+<table>
+    <tr>
+        <th>Task</th>
+    </tr>
+    {% for task in Todo_List %}
+     <tr>
+        <td>{{task.task}}.</td>
+         <td><a href="{% url 'Update'  task.id %}">Update</a></td>
+         <td><a href="{% url 'Delete'  task.id %}">Delete</a></td>
+    </tr>
+    {% empty %}  <!-- when list is empty -->
+        <p>Nothing to do</p>  <!--TODO: improve styling when list is empty-->
+    {% endfor %}
+</table>
+{% endblock %}
+
