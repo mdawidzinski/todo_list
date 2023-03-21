@@ -3,23 +3,24 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.urls import reverse_lazy
 from datetime import datetime
 from .models import Task
+from .form import UserRegister
 
 
-class Register(FormView):  # TODO add email
-    template_name = 'main/register.html'
-    form_class = UserCreationForm
+class Register(FormView):
+    form_class = UserRegister
     redirect_authenticated_user = True
+    success_url = reverse_lazy('Todo')
 
     def form_valid(self, form):
         user = form.save()
         if user is not None:
             login(self.request, user)
-        return super(Register, self).form_valid(form)
+            return super(Register, self).form_valid(form)
+        
 
     def get(self, *args, **kwargs):  # TODO redirect ?
         if self.request.user.is_authenticated:
@@ -27,7 +28,7 @@ class Register(FormView):  # TODO add email
         return super(Register, self).get(*args, **kwargs)
 
 
-class Login(LoginView):  # TODO password_reset, password_change
+class Login(LoginView):
     template_name = 'main/login.html'
     fields = '__all__'
     redirect_authenticated_user = True

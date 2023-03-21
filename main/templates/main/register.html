@@ -5,8 +5,10 @@
 <h1>Register</h1>
 <form method="POST" class="card-body">
   {% csrf_token %}
-  <label>{{form.username.label}}</label>
+  <label>{{form.username.label}}</label>  <!-- dwukropki? -->
   {{form.username}}<br>
+   <label>{{form.email.label}}</label>
+  {{form.email}}<br>
   <label>{{form.password1.label}}</label>
   {{form.password1}}<br>
   <label>{{form.password2.label}}</label>
